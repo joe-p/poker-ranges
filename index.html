@@ -1,0 +1,248 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+    
+.switch-field {
+    display: flex;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.switch-field input {
+    position: absolute !important;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    border: 0;
+    overflow: hidden;
+}
+
+.switch-field label {
+    background-color: #e4e4e4;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    line-height: 1;
+    text-align: center;
+    padding: 8px 16px;
+    margin-right: -1px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+    transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+    cursor: pointer;
+}
+
+.switch-field input:checked + label {
+    background-color: #a5dc86;
+    box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+    border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+    border-radius: 0 4px 4px 0;
+}
+
+h3 {
+	margin-bottom: 2px;
+	margin-top: 2px;
+}
+#parent {display: flex;}
+#right { flex-grow: 100;}
+img {max-width:100%;}
+    </style>
+	
+
+</head>
+    
+<body>
+	<div id="parent">
+    <div id="left">
+			    
+		<h3> Action </h3>
+		<div class="switch-field">
+			<input type="radio" name="action" id="rfi" checked="checked"/>
+			<label for="rfi">RFI</label>
+			
+			<input type="radio" name="action" id="vs_limp"/>
+			<label for="vs_limp">vs Limp</label>
+			
+			<input type="radio" name="action" id="vs_3bb"/>
+			<label for="vs_3bb">vs 3BB</label>
+			
+			<input type="radio" name="action" id="vs_4bb"/>
+			<label for="vs_4bb">vs 4BB</label>
+			
+			<input type="radio" name="action" id="squeeze"/>
+			<label for="squeeze">Squeeze</label>
+		</div>
+
+        <h3>Hero Position</h3>
+        <div class="switch-field">
+            <input type="radio" name="hero_position" id="hero_utg" checked="checked"/>
+            <label for="hero_utg">UTG</label>
+           
+			<input type="radio" name="hero_position" id="hero_hj"/>            
+            <label for="hero_hj">MP</label>
+			
+			<input type="radio" name="hero_position" id="hero_co" />
+            <label for="hero_co">CO</label>
+			
+			<input type="radio" name="hero_position" id="hero_bu" />
+            <label for="hero_bu">BU</label>
+			
+			<input type="radio" name="hero_position" id="hero_sb"/>
+            <label for="hero_sb">SB</label>
+			
+			<input type="radio" name="hero_position" id="hero_bb"/>
+            <label for="hero_bb">BB</label>
+        </div>
+        <h3>Villian Position</h3>
+		<div class="switch-field">
+			<input type="radio" name="villian_position" id="villian_lj" checked="checked"/>
+			<label for="villian_lj">UTG</label>
+			
+			<input type="radio" name="villian_position" id="villian_hj"/>
+			<label for="villian_hj">MP</label>
+			
+			<input type="radio" name="villian_position" id="villian_co"/>
+			<label for="villian_co">CO</label>
+			
+			<input type="radio" name="villian_position" id="villian_bu"/>
+			<label for="villian_bu">BU</label>
+			
+			<input type="radio" name="villian_position" id="villian_sb"/>
+			<label for="villian_sb">SB</label>
+			
+			<input type="radio" name="villian_position" id="villian_bb"/>
+			<label for="villian_bb">BB</label>
+		</div>
+    
+        <h3>Caller Position (for squeeze)</h3>
+		<div class="switch-field">
+			<input type="radio" name="caller_position" id="caller_lj" checked="checked">
+			<label for="caller_lj">UTG</label>
+			
+			<input type="radio" name="caller_position" id="caller_hj">
+			<label for="caller_hj">MP</label>
+			
+			<input type="radio" name="caller_position" id="caller_co">
+			<label for="caller_co">CO</label>
+			
+			<input type="radio" name="caller_position" id="caller_bu">
+			<label for="caller_bu">BU</label>
+			
+			<input type="radio" name="caller_position" id="caller_sb">
+			<label for="caller_sb">SB</label>
+			
+			<input type="radio" name="caller_position" id="caller_bb">
+			<label for="caller_bb">BB</label>
+		</div>
+
+        <p>
+        Red = Always Raise
+
+        </p>
+        <p>
+
+        Orange = Often Raise, otherwise Call
+
+        </p>
+
+        <p>
+        Yellow = Sometimes Raise, otherwise Call
+
+
+        </p>
+        <p>
+        Green = Always Call
+
+        </p>
+        <p>
+
+        Pink = Sometimes Raise, otherwise Fold
+
+        </p>
+        <p>
+        White = Call or Fold
+
+        </p>
+        <p>
+        Blue = Raise, Call or Fold
+
+        </p>
+        <p>
+        Grey = Always Fold
+
+        </p>
+
+        <p id="rando">50</p>
+    </div>
+
+
+    <div id="right">
+        <img id="range_image" src="LJ-RFI.png"/>
+    </div>
+	</div>
+</body>
+
+<script>
+vars = {}
+ids = {}
+
+
+image_str = ''
+
+$(function() {
+    $("input:radio:checked").each(function(){
+        ids[this.name] = this.id
+    });
+});
+
+
+$('[type="radio"]').change(function() {
+    $('#rando').text(Math.random() * 100 + 1)
+    
+
+
+    ids[this.name] = this.id
+
+    vars["hero_position"] = ids["hero_position"].split("_")[1].toUpperCase()
+    vars["villian_position"] = ids["villian_position"].split("_")[1].toUpperCase()
+	vars["caller_position"] = ids["caller_position"].split("_")[1].toUpperCase()
+
+    switch(ids["action"]){
+
+        case "rfi":
+            image_str = `${vars["hero_position"]}-RFI.png`
+            break;
+
+        case "vs_4bb":
+            image_str = `${vars["hero_position"]}-vs-${vars["villian_position"]}-4bb-rfi.png`
+            break;
+        
+        case "vs_3bb":
+            image_str = `${vars["hero_position"]}-vs-${vars["villian_position"]}-3bb-rfi.png`
+            break;
+
+        case "squeeze":
+            image_str = `${vars["hero_position"]}-vs-${vars["villian_position"]}-3BB-RFI-${vars["caller_position"]}-call.png`
+			break;
+		
+		case "vs_limp":
+            image_str = `${vars["hero_position"]}-vs-${vars["villian_position"]}-OL.png`
+			break;
+					
+
+
+    }
+
+    $('#range_image').attr("src", `/ranges/zentith/${image_str}`)
+});
+
+
+</script>
